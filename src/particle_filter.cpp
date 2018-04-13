@@ -25,7 +25,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	//   x, y, theta and their uncertainties from GPS) and all weights to 1. 
 	// Add random Gaussian noise to each particle.
 	// NOTE: Consult particle_filter.h for more information about this method (and others in this file).
-	num_particles = 10;
+	num_particles = 100;
 
 	normal_distribution<double> Noise_x(0, std[0]);
 	normal_distribution<double> Noise_y(0, std[1]);
@@ -121,7 +121,6 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 			double dy = ly - particles[i].y;
 			double dist = pow(dx,2) + pow(dy,2);
     	if (sqrt(dist) <= sensor_range){
-			//if (fabs(lx - p_x) <= sensor_range && fabs(ly - p_y) <= sensor_range) {
 				LandmarkObs obs = LandmarkObs{lid, lx, ly};
 				sel_predictions.push_back(obs);
 			}
