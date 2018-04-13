@@ -52,7 +52,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 	normal_distribution<double> Noise_y(0, std_pos[1]);
  	normal_distribution<double> Noise_theta(0, std_pos[2]);
 	for (int i=0; i<num_particles; i++){
-		if (yaw_rate > 0.001 ) {
+		if ( fabs(yaw_rate) > 0.00001 ) {
 			particles[i].x += velocity/yaw_rate * (sin(particles[i].theta + yaw_rate*delta_t) - sin(particles[i].theta));
 			particles[i].y += velocity/yaw_rate * (-cos(particles[i].theta + yaw_rate*delta_t) + cos(particles[i].theta));
 			particles[i].theta += yaw_rate * delta_t;
@@ -74,7 +74,7 @@ void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::ve
 	//   implement this method and use it as a helper during the updateWeights phase.
 	for (int i=0; i<observations.size(); i++) {
 		LandmarkObs observation = observations[i];
-	  double min_distance = 100000;
+	  double min_distance = numeric_limits<double>::max();
 	  int id_with_min_distance = -1;
 
 	  for (int j=0; j<predicted.size(); j++) {
@@ -182,7 +182,6 @@ void ParticleFilter::resample() {
 	  }
 	  resampled_particles.push_back(particles[index]);
 	}
-
   particles = resampled_particles;
 }
 
